@@ -11,7 +11,7 @@ export class AuthController {
     async login(@Body() signIn: any, @Res() res: Response) {
         
         if(!signIn.username || signIn.pass == undefined){
-            throw new HttpException('No params', HttpStatus.NO_CONTENT)
+            throw new HttpException('No params', HttpStatus.BAD_REQUEST)
         }
 
         const token = await this.authService.login(signIn.username, signIn.pass)

@@ -22,7 +22,7 @@ let AuthController = exports.AuthController = class AuthController {
     }
     async login(signIn, res) {
         if (!signIn.username || signIn.pass == undefined) {
-            throw new common_1.HttpException('No params', common_1.HttpStatus.NO_CONTENT);
+            throw new common_1.HttpException('No params', common_1.HttpStatus.BAD_REQUEST);
         }
         const token = await this.authService.login(signIn.username, signIn.pass);
         res.status(common_1.HttpStatus.OK).json({
