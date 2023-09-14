@@ -14,11 +14,11 @@ export class AuthController {
             throw new HttpException('No params', HttpStatus.BAD_REQUEST)
         }
 
-        const token = await this.authService.login(signIn.username, signIn.pass)
+        const user = await this.authService.login(signIn.username, signIn.pass)
 
         res.status(HttpStatus.OK).json({
             ok: true,
-            token,
+            user,
             msg: 'Logged'
         })
     }

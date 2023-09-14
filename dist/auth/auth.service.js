@@ -34,7 +34,8 @@ let AuthService = exports.AuthService = class AuthService {
             }
             const payload = { sub: user.id, username: user.username, role: user.role };
             return {
-                access_token: await this.jwtService.signAsync(payload)
+                access_token: await this.jwtService.signAsync(payload),
+                user: { name: user.name, last_name: user.last_name, config: user.config }
             };
         }
         catch (e) {

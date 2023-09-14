@@ -75,3 +75,5 @@ Nest is [MIT licensed](LICENSE).
 
 |-------------------------------------------------------------------------------------------------|
 Create USER -> automatically creates CONFIGURATION
+UPLOADS RETURN NAME FILE --> Save name file into module / matter entity
+Update image entity == delete image / post new one // update name file in entity 

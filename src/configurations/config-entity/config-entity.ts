@@ -7,7 +7,19 @@ export class ConfigEntity {
     id: string
 
     @Column('boolean', { default: false })
-    gamma: boolean
+    contrast_black: boolean
+
+    @Column('boolean', { default: false })
+    text_size: boolean
+
+    @Column('boolean', { default: false })
+    text_spacing: boolean
+
+    @Column('boolean', { default: false })
+    high_visibility: boolean
+
+    @Column('boolean', { default: false })
+    fontDyslexic: boolean
 
     @OneToMany(()=> UserEntity, (user)=> user.config)
     user: UserEntity[]

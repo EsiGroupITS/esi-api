@@ -21,7 +21,23 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)('boolean', { default: false }),
     __metadata("design:type", Boolean)
-], ConfigEntity.prototype, "gamma", void 0);
+], ConfigEntity.prototype, "contrast_black", void 0);
+__decorate([
+    (0, typeorm_1.Column)('boolean', { default: false }),
+    __metadata("design:type", Boolean)
+], ConfigEntity.prototype, "text_size", void 0);
+__decorate([
+    (0, typeorm_1.Column)('boolean', { default: false }),
+    __metadata("design:type", Boolean)
+], ConfigEntity.prototype, "text_spacing", void 0);
+__decorate([
+    (0, typeorm_1.Column)('boolean', { default: false }),
+    __metadata("design:type", Boolean)
+], ConfigEntity.prototype, "high_visibility", void 0);
+__decorate([
+    (0, typeorm_1.Column)('boolean', { default: false }),
+    __metadata("design:type", Boolean)
+], ConfigEntity.prototype, "fontDyslexic", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => user_entity_1.UserEntity, (user) => user.config),
     __metadata("design:type", Array)

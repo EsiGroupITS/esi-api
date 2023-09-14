@@ -18,11 +18,15 @@ const user_entity_1 = require("./users/user-entity/user-entity");
 const config_entity_1 = require("./configurations/config-entity/config-entity");
 const auth_module_1 = require("./auth/auth.module");
 const jwt_1 = require("@nestjs/jwt");
+const path_1 = require("path");
+const serve_static_1 = require("@nestjs/serve-static");
+const uploads_module_1 = require("./uploads/uploads.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            serve_static_1.ServeStaticModule.forRoot({ rootPath: (0, path_1.join)(__dirname, '..', 'uploads') }),
             config_1.ConfigModule.forRoot(),
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'mysql',
@@ -45,7 +49,8 @@ exports.AppModule = AppModule = __decorate([
             }),
             configurations_module_1.ConfigurationsModule,
             users_module_1.UsersModule,
-            auth_module_1.AuthModule
+            auth_module_1.AuthModule,
+            uploads_module_1.UploadsModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

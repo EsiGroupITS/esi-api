@@ -200,7 +200,7 @@ export class UsersService {
      */
     async login(username: string) {
         try {
-            const result = await this.userRepo.findOne({where:{username}})
+            const result = await this.userRepo.findOne({where:{username}, relations: { config: true }})
             return result
         }
         catch (e: any) {

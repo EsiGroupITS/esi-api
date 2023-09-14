@@ -9,10 +9,14 @@ import { UserEntity } from './users/user-entity/user-entity';
 import { ConfigEntity } from './configurations/config-entity/config-entity';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ServeStaticModule.forRoot({rootPath: join(__dirname, '..', 'uploads')}), //! Manages file uploads path
+    ConfigModule.forRoot(), //! Configuration module
     TypeOrmModule.forRoot({
       type: 'mysql',
       database: process.env.DATABASE,
@@ -21,20 +25,24 @@ import { JwtModule } from '@nestjs/jwt';
       port: +process.env.PORT,
       host: process.env.HOST,
       entities: [
+        /* Entities */
         UserEntity,
         ConfigEntity
       ],
       autoLoadEntities: true,
       synchronize: true
     }),
-    JwtModule.register({
+    JwtModule.register({ //! Json Web Token module configurations
       global: true,
       secret: process.env.SEED,
       signOptions: { expiresIn: '10000h' }
     }),
+
+    /* Internal modules */
     ConfigurationsModule,
     UsersModule,
-    AuthModule
+    AuthModule,
+    UploadsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -24,10 +24,10 @@ let AuthController = exports.AuthController = class AuthController {
         if (!signIn.username || signIn.pass == undefined) {
             throw new common_1.HttpException('No params', common_1.HttpStatus.BAD_REQUEST);
         }
-        const token = await this.authService.login(signIn.username, signIn.pass);
+        const user = await this.authService.login(signIn.username, signIn.pass);
         res.status(common_1.HttpStatus.OK).json({
             ok: true,
-            token,
+            user,
             msg: 'Logged'
         });
     }
