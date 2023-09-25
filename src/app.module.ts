@@ -12,6 +12,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UploadsModule } from './uploads/uploads.module';
+import { GamesModule } from './games/games.module';
+import { CommonModule } from './common/common.module';
+import { ParticipationsModule } from './participations/participations.module';
+import { Game } from './games/entities/game.entity';
+import { Participation } from './participations/entities/participation.entity';
 
 @Module({
   imports: [
@@ -27,7 +32,9 @@ import { UploadsModule } from './uploads/uploads.module';
       entities: [
         /* Entities */
         UserEntity,
-        ConfigEntity
+        ConfigEntity,
+        Game,
+        Participation
       ],
       autoLoadEntities: true,
       synchronize: true
@@ -42,7 +49,10 @@ import { UploadsModule } from './uploads/uploads.module';
     ConfigurationsModule,
     UsersModule,
     AuthModule,
-    UploadsModule
+    UploadsModule,
+    GamesModule,
+    CommonModule,
+    ParticipationsModule
   ],
   controllers: [AppController],
   providers: [AppService],

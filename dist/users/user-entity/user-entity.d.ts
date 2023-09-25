@@ -1,4 +1,6 @@
 import { ConfigEntity } from "src/configurations/config-entity/config-entity";
+import { Game } from "src/games/entities/game.entity";
+import { Participation } from '../../participations/entities/participation.entity';
 export declare class UserEntity {
     id: string;
     name: string;
@@ -7,4 +9,6 @@ export declare class UserEntity {
     pass: string;
     role: string;
     config: ConfigEntity;
+    game: Game[];
+    participation: Participation;
 }
