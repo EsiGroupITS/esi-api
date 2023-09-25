@@ -29,12 +29,8 @@ export class UserEntity {
     config: ConfigEntity
 
     //Relación usuario con game, permite saber qué usuario creó un game
-
-    @ManyToOne(
-        () => Game,                 // apuntamos a la entidad Game
-        ( game ) => game.user)      // creamos una nueva instancia de game, y ese game se relaciona con la Tabla game, y el atributo user
-        game: Game[];
-
+    @OneToMany(()=> Game, (game)=> game.user)
+    game: Game[]
     // Relación usuario con participations
 
     @OneToMany(

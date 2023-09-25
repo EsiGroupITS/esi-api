@@ -18,14 +18,6 @@ export class Participation {
         () => UserEntity,
         ( userParticipation ) => userParticipation.participation,
         { eager: true })
-
         userParticipation: UserEntity
-
-    @ManyToOne(
-        () => Game,
-        ( gameParticipation ) => gameParticipation.game,
-        { eager:true })
-
-        gameParticipation: Game
 
 }

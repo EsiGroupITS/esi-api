@@ -24,18 +24,6 @@ export class Game {
     created_at: Date;
 
     // Relación game-user
-
-    @OneToMany(
-        () => UserEntity,
-        ( user ) => user.game,
-        //{ eager: true } //carga automáticamente la relación entre los usuarios y games
-    )
-    user:UserEntity
-
-    @OneToMany(
-        () => Participation,
-        ( game ) =>  game.gameParticipation,
-    )
-    game: UserEntity
-
+    @ManyToOne(()=> UserEntity, (user)=> user.game)
+    user: UserEntity
 }

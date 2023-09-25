@@ -45,7 +45,7 @@ __decorate([
     __metadata("design:type", config_entity_1.ConfigEntity)
 ], UserEntity.prototype, "config", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => game_entity_1.Game, (game) => game.user),
+    (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.user),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "game", void 0);
 __decorate([
