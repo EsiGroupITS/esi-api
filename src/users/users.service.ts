@@ -5,7 +5,6 @@ import { UserDto } from './user-dto/user-dto';
 import { Repository } from 'typeorm';
 import { ConfigDto } from 'src/configurations/config-dto/config-dto';
 import { REQUEST } from '@nestjs/core';
-import { Game } from '../games/entities/game.entity';
 
 @Injectable()
 export class UsersService {

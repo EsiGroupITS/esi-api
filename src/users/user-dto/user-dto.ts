@@ -1,5 +1,7 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 import { ConfigDto } from "src/configurations/config-dto/config-dto"
+import { Participation } from "src/participations/entities/participation.entity"
+import { CreateGameDto } from '../../games/dto/create-game.dto';
 
 export class UserDto {
     id:string
@@ -16,4 +18,10 @@ export class UserDto {
 
     //! Relational
     config: ConfigDto
+
+    game: CreateGameDto
+
+    //game: CreateGameDto
+
+  participations: Participation
 }

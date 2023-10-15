@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query, UseGuards } from '@nestjs/common';
 import { GamesService } from './games.service';
-import { CreateGameDto } from './dto/create-game.dto';
 import { PaginationDto } from '../common/dtos/pagination.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -9,6 +8,7 @@ import { Role } from 'src/auth/roles/role.decorator';
 import { RoleGuard } from 'src/auth/roles/role.guard';
 import { UserEntity } from '../users/user-entity/user-entity';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
+import { CreateGameDto } from './dto/create-game.dto';
 
 
 
@@ -16,28 +16,25 @@ import { GetUser } from 'src/auth/decorators/get-user.decorator';
 // Guards y Roles para Games
 
 @UseGuards(AuthGuard, RoleGuard)
-//@Role(RoleEnum.Admin, RoleEnum.User, RoleEnum.Superuser)
+@Role(RoleEnum.Admin, RoleEnum.User, RoleEnum.Superuser)
 @Controller('games')
 
 export class GamesController {
-  constructor(private readonly gamesService: GamesService) {}
+  constructor(private gamesService: GamesService) {}
 
  
   @Post('create')
   @Role(RoleEnum.Superuser, RoleEnum.Admin)
   create(
-    //@Param('id', ParseUUIDPipe) id: string,
+    @GetUser() user:{ id: string},
     @Body() createGameDto: CreateGameDto,
-    @GetUser('name', 'id') user: UserEntity,
   ){
     
-    return this.gamesService.create(createGameDto, user);
+    return this.gamesService.create(createGameDto, user.id);
   
   }
   
-
-
-  /*
+/*
   testingPrivateRoute(
     @GetUser(['name', 'username']) user: UserEntity,       // Usamos el decorador creado get-user. Y obtenemos al usuario de la request
   ) {
@@ -46,10 +43,6 @@ export class GamesController {
       message: 'User obtenido',
       user,
     }
-  }
-
-  create(@Body() createGameDto: CreateGameDto) {
-    return this.gamesService.create(createGameDto);
   }*/
 
   // Implementamos paginación
@@ -64,14 +57,14 @@ export class GamesController {
     return this.gamesService.findOne(term);
   }
 
-
-  @Role(RoleEnum.Superuser, RoleEnum.Admin)
   @Patch(':id')
+  @Role(RoleEnum.Superuser, RoleEnum.Admin)
   update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @GetUser('id') users: UserEntity, 
-    @Body() updateGameDto: UpdateGameDto) {
-    return this.gamesService.update(id, updateGameDto, users);
+    //@Param('id', ParseUUIDPipe) id: string, 
+    @Body() updateGameDto: UpdateGameDto,
+    @GetUser() user: UserEntity,
+    ) {
+    return this.gamesService.update( updateGameDto, user);
   }
 
 

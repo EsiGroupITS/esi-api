@@ -10,5 +10,5 @@ export declare class UserEntity {
     role: string;
     config: ConfigEntity;
     game: Game[];
-    participation: Participation;
+    participations: Participation[];
 }

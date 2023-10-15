@@ -1,8 +1,10 @@
-import { IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
+import { IsString, MinLength, IsNotEmpty, IsOptional } from "class-validator";
+import { UserDto } from "src/users/user-dto/user-dto";
+
 
 export class CreateGameDto {
 
-    @IsNotEmpty()
+    //@IsNotEmpty()
     @IsString()
     @MinLength(3)
     title: string;
@@ -14,4 +16,8 @@ export class CreateGameDto {
     @IsOptional()
     @IsString()
     category?: string;
+
+    username: string;
+
+
 }

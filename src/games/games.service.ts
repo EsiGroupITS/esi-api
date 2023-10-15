@@ -1,5 +1,4 @@
 import { Injectable, InternalServerErrorException, Logger, BadRequestException, NotFoundException } from '@nestjs/common';
-import { CreateGameDto } from './dto/create-game.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Game } from './entities/game.entity';
@@ -7,6 +6,7 @@ import { PaginationDto } from '../common/dtos/pagination.dto';
 import { validate as isUUID } from 'uuid';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { UserEntity } from '../users/user-entity/user-entity';
+import { CreateGameDto } from './dto/create-game.dto';
 
 @Injectable()
 export class GamesService {
@@ -18,27 +18,39 @@ export class GamesService {
   // Inject repositories
 
   constructor (
-    @InjectRepository(Game)
-    private readonly gameRepository: Repository<Game>,
-
-  ) {}
+    @InjectRepository(Game) private gameRepository: Repository<Game>,
+    @InjectRepository(UserEntity)private userRepository: Repository<UserEntity>)
+   {}
 
   // Verificar User
   
-  async create(createGameDto: CreateGameDto, user: UserEntity) {
+  async create(createGameDto:CreateGameDto, username: string) {
 
+    const user = await this.userRepository.findOne({ where: {username} });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
     try {
 
+      const game = new Game();
+      game.title = createGameDto.title;
+      game.description = createGameDto.description;
+      game.category = createGameDto.category;
+      game.user = user;
+
+
+      /*
       const { ...gameDetails } = createGameDto;
 
       const game = this.gameRepository.create({        // Creamos el registro en memoria
         ...gameDetails,
         user,
-    });                        
+  */                             
 
     await this.gameRepository.save( game );        // Grabamos el registro en la DB.
 
-    return { ...game };
+    return { game, username };
 
     } catch (error) { 
 
@@ -57,8 +69,6 @@ export class GamesService {
       skip: offset
 
       // TODO relaciones
-
-
     });
   }
 
@@ -68,7 +78,7 @@ export class GamesService {
     let game: Game;
 
     if( isUUID(term) ) {
-      game = await this.gameRepository.findOneBy({ id: term});
+      game = await this.gameRepository.findOneBy({ id: term });
       
     } else {
       const queryBuilder = this.gameRepository.createQueryBuilder();
@@ -84,14 +94,16 @@ export class GamesService {
     return game;
   }
 
-  async update(id: string, updateGameDto: UpdateGameDto, user: UserEntity) {
+  async update(updateGameDto: UpdateGameDto, user: UserEntity) {
+
+    const { ...toUpdate } = updateGameDto;
 
     const game = await this.gameRepository.preload({
-      id: id,           // Buscamos un juego por el id y cargamos sus propiedades que estén en el updateProductDto
-      ...updateGameDto
+                // Buscamos un juego por el id y cargamos sus propiedades que estén en el updateProductDto
+      ...toUpdate
     });
 
-    if ( !game ) throw new NotFoundException(`Game with id: ${ id } not found`);
+    if ( !game ) throw new NotFoundException(`Game not found`);
 
     try {
 
@@ -105,7 +117,7 @@ export class GamesService {
 
   async remove(id: string) {
     const game = await this.findOne( id );
-    await this.gameRepository.remove( game);
+    await this.gameRepository.remove( game );
   }
 
   // Acá manejamos lo errores que podamos tener en el CRUD
@@ -119,5 +131,6 @@ export class GamesService {
     throw new InternalServerErrorException('Unexpecter error, check server logs');
   }
 }
+
 
 

@@ -49,9 +49,9 @@ __decorate([
     __metadata("design:type", Array)
 ], UserEntity.prototype, "game", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => participation_entity_1.Participation, (participation) => participation.userParticipation),
-    __metadata("design:type", participation_entity_1.Participation)
-], UserEntity.prototype, "participation", void 0);
+    (0, typeorm_1.OneToMany)(() => participation_entity_1.Participation, (participation) => participation.user),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "participations", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('users')
 ], UserEntity);

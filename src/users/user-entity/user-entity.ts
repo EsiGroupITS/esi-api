@@ -29,13 +29,14 @@ export class UserEntity {
     config: ConfigEntity
 
     //Relación usuario con game, permite saber qué usuario creó un game
-    @OneToMany(()=> Game, (game)=> game.user)
-    game: Game[]
+    @OneToMany(() => Game, (game) => game.user)
+    game: Game[];
+
     // Relación usuario con participations
 
     @OneToMany(
         () => Participation,
-        ( participation ) => participation.userParticipation )
-        participation: Participation
+        ( participation ) => participation.user )
+        participations: Participation[];
 
 }
