@@ -14,9 +14,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { UploadsModule } from './uploads/uploads.module';
 import { GamesModule } from './games/games.module';
 import { CommonModule } from './common/common.module';
-import { ParticipationsModule } from './participations/participations.module';
 import { Game } from './games/entities/game.entity';
-import { Participation } from './participations/entities/participation.entity';
+import { QuestionsModule } from './questions/questions.module';
 
 @Module({
   imports: [
@@ -34,7 +33,6 @@ import { Participation } from './participations/entities/participation.entity';
         UserEntity,
         ConfigEntity,
         Game,
-        Participation
       ],
       autoLoadEntities: true,
       synchronize: true
@@ -52,7 +50,7 @@ import { Participation } from './participations/entities/participation.entity';
     UploadsModule,
     GamesModule,
     CommonModule,
-    ParticipationsModule
+    QuestionsModule
   ],
   controllers: [AppController],
   providers: [AppService],

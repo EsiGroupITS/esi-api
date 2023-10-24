@@ -13,7 +13,6 @@ exports.UserEntity = void 0;
 const config_entity_1 = require("../../configurations/config-entity/config-entity");
 const game_entity_1 = require("../../games/entities/game.entity");
 const typeorm_1 = require("typeorm");
-const participation_entity_1 = require("../../participations/entities/participation.entity");
 let UserEntity = exports.UserEntity = class UserEntity {
 };
 __decorate([
@@ -48,10 +47,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => game_entity_1.Game, (game) => game.user),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "game", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => participation_entity_1.Participation, (participation) => participation.user),
-    __metadata("design:type", Array)
-], UserEntity.prototype, "participations", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('users')
 ], UserEntity);

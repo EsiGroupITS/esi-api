@@ -1,6 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne} from 'typeorm';
 import { UserEntity } from '../../users/user-entity/user-entity';
-import { Participation } from '../../participations/entities/participation.entity';
 
 @Entity('games')
 
@@ -29,9 +28,4 @@ export class Game {
         {eager: true}
     )
     user: UserEntity;
-
-
-
-    @OneToMany(() => Participation, participation => participation.game)
-    participations: Participation[];
 }

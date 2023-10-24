@@ -1,5 +1,4 @@
 import { ConfigDto } from "src/configurations/config-dto/config-dto";
-import { Participation } from "src/participations/entities/participation.entity";
 import { CreateGameDto } from '../../games/dto/create-game.dto';
 export declare class UserDto {
     id: string;
@@ -10,5 +9,4 @@ export declare class UserDto {
     role: string;
     config: ConfigDto;
     game: CreateGameDto;
-    participations: Participation;
 }

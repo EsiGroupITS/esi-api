@@ -23,9 +23,8 @@ const serve_static_1 = require("@nestjs/serve-static");
 const uploads_module_1 = require("./uploads/uploads.module");
 const games_module_1 = require("./games/games.module");
 const common_module_1 = require("./common/common.module");
-const participations_module_1 = require("./participations/participations.module");
 const game_entity_1 = require("./games/entities/game.entity");
-const participation_entity_1 = require("./participations/entities/participation.entity");
+const questions_module_1 = require("./questions/questions.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -44,7 +43,6 @@ exports.AppModule = AppModule = __decorate([
                     user_entity_1.UserEntity,
                     config_entity_1.ConfigEntity,
                     game_entity_1.Game,
-                    participation_entity_1.Participation
                 ],
                 autoLoadEntities: true,
                 synchronize: true
@@ -60,7 +58,7 @@ exports.AppModule = AppModule = __decorate([
             uploads_module_1.UploadsModule,
             games_module_1.GamesModule,
             common_module_1.CommonModule,
-            participations_module_1.ParticipationsModule
+            questions_module_1.QuestionsModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -1,7 +1,6 @@
 import { ConfigEntity } from "src/configurations/config-entity/config-entity";
 import { Game } from "src/games/entities/game.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import { Participation } from '../../participations/entities/participation.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -31,12 +30,5 @@ export class UserEntity {
     //Relación usuario con game, permite saber qué usuario creó un game
     @OneToMany(() => Game, (game) => game.user)
     game: Game[];
-
-    // Relación usuario con participations
-
-    @OneToMany(
-        () => Participation,
-        ( participation ) => participation.user )
-        participations: Participation[];
 
 }
