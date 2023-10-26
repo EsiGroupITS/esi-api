@@ -31,4 +31,14 @@ export class QuestionsService {
         }
     }
 
+    async getByCategory(category: string): Promise<QuestionDto[]> {
+        try {
+            const result = await this.questionRepository.find({ where: { category: category } })
+            if(!result) throw new HttpException('Not found', HttpStatus.NOT_FOUND)
+            else return result
+        } catch (e: any) {
+            throw new HttpException(`${e.name}: ${e.message}`, e.status)
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { QuestionDto } from './dto/question.dto';
 import { Response } from 'express';
@@ -24,6 +24,16 @@ export class QuestionsController {
     async getAll(@Res() response: Response) {
         const result = await this.questionService.getAll()
         response.status(HttpStatus.OK).json({
+            ok: true,
+            result,
+            msg: 'Approved'
+        })
+    }
+
+    @Get('category/:category')
+    async getByCategory(@Param('category') category: string, @Res() res: Response) {
+        const result = await this.questionService.getByCategory(category)
+        res.status(HttpStatus.OK).json({
             ok: true,
             result,
             msg: 'Approved'
