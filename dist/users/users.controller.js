@@ -153,6 +153,7 @@ exports.UsersController = UsersController = __decorate([
     (0, role_decorator_1.Role)(role_enum_1.RoleEnum.Admin, role_enum_1.RoleEnum.User, role_enum_1.RoleEnum.Superuser),
     (0, common_1.Controller)('users'),
     (0, swagger_1.ApiTags)('users'),
+    (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map

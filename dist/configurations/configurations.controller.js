@@ -121,6 +121,7 @@ exports.ConfigurationsController = ConfigurationsController = __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard, role_guard_1.RoleGuard),
     (0, role_decorator_1.Role)(role_enum_1.RoleEnum.Superuser, role_enum_1.RoleEnum.User, role_enum_1.RoleEnum.Admin),
     (0, common_1.Controller)('configurations'),
+    (0, swagger_1.ApiBearerAuth)(),
     (0, swagger_1.ApiTags)('configurations'),
     __metadata("design:paramtypes", [configurations_service_1.ConfigurationsService])
 ], ConfigurationsController);
