@@ -2,10 +2,11 @@ import { Body, Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/com
 import { QuestionsService } from './questions.service';
 import { QuestionDto } from './dto/question.dto';
 import { Response } from 'express';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('questions')
 @ApiTags('questions')
+@ApiBearerAuth() //! Set the bearer to get the headers
 export class QuestionsController {
 
     constructor(

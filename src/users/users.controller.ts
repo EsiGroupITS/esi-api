@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Put, Res, UseGuards } from '@nestjs/common';
-import { ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleEnum } from 'src/auth/roles/role-enum/role-enum';
@@ -13,6 +13,7 @@ import { UsersService } from './users.service';
 @Role(RoleEnum.Admin, RoleEnum.User, RoleEnum.Superuser)
 @Controller('users')
 @ApiTags('users')
+@ApiBearerAuth() //! Set the bearer to get the headers
 export class UsersController {
     constructor(private userService: UsersService) {  }
 

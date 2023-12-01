@@ -6,12 +6,13 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/roles/role.guard';
 import { Role } from 'src/auth/roles/role.decorator';
 import { RoleEnum } from 'src/auth/roles/role-enum/role-enum';
-import { ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags, getSchemaPath } from '@nestjs/swagger';
 import { UserDto } from 'src/users/user-dto/user-dto';
 
 @UseGuards(AuthGuard, RoleGuard)
 @Role(RoleEnum.Superuser, RoleEnum.User, RoleEnum.Admin)
 @Controller('configurations')
+@ApiBearerAuth() //! Set the bearer to get the headers
 @ApiTags('configurations')
 export class ConfigurationsController {
     constructor(private configService: ConfigurationsService) {}

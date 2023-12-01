@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Patch, Post, Query, Res, UseGuards } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
@@ -15,6 +15,7 @@ import { GamesService } from './games.service';
 @UseGuards(AuthGuard, RoleGuard)
 @Role(RoleEnum.Admin, RoleEnum.User, RoleEnum.Superuser)
 @Controller('games')
+@ApiBearerAuth() //! Set the bearer to get the headers
 //Set the tag for GAMES
 @ApiTags('games')
 export class GamesController {
