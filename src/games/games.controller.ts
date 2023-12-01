@@ -1,68 +1,75 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query, UseGuards } from '@nestjs/common';
-import { GamesService } from './games.service';
-import { PaginationDto } from '../common/dtos/pagination.dto';
-import { UpdateGameDto } from './dto/update-game.dto';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseUUIDPipe, Patch, Post, Query, Res, UseGuards } from '@nestjs/common';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { RoleEnum } from 'src/auth/roles/role-enum/role-enum';
 import { Role } from 'src/auth/roles/role.decorator';
 import { RoleGuard } from 'src/auth/roles/role.guard';
-import { UserEntity } from '../users/user-entity/user-entity';
-import { GetUser } from 'src/auth/decorators/get-user.decorator';
+import { UserDto } from 'src/users/user-dto/user-dto';
+import { PaginationDto } from '../common/dtos/pagination.dto';
 import { CreateGameDto } from './dto/create-game.dto';
-
-
-
+import { GamesService } from './games.service';
 
 // Guards y Roles para Games
-
 @UseGuards(AuthGuard, RoleGuard)
 @Role(RoleEnum.Admin, RoleEnum.User, RoleEnum.Superuser)
 @Controller('games')
-
+//Set the tag for GAMES
+@ApiTags('games')
 export class GamesController {
-  constructor(private gamesService: GamesService) {}
 
- 
+  constructor(
+    private gamesService: GamesService
+  ) {}
+
   @Post('create')
   @Role(RoleEnum.Superuser, RoleEnum.Admin)
-  create(
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'Approved', type: CreateGameDto })
+  @ApiResponse({ status: 403, description: 'Forbidden. No role admitted' })
+  @ApiResponse({ status: 500, description: 'Internal Server Error'})
+  async create(
     @GetUser() user:{ id: string},
     @Body() createGameDto: CreateGameDto,
+    @Res() res: Response
   ){
-    
-    return this.gamesService.create(createGameDto, user.id);
-  
-  }
-  
-/*
-  testingPrivateRoute(
-    @GetUser(['name', 'username']) user: UserEntity,       // Usamos el decorador creado get-user. Y obtenemos al usuario de la request
-  ) {
-    return {
+    const result = await this.gamesService.create(createGameDto, user.id);
+    res.status(HttpStatus.CREATED).json({
       ok: true,
-      message: 'User obtenido',
-      user,
-    }
-  }*/
+      result,
+      msg: 'Approved'
+    })
+  }
 
   // Implementamos paginación
   @Get()
-  findAll(@Query() paginationDto:PaginationDto) {
-    console.log(paginationDto)
-    return this.gamesService.findAll(paginationDto);
+  @ApiResponse({ status: HttpStatus.OK, description: 'Approved', type: CreateGameDto, isArray: true })
+  @ApiResponse({ status: 403, description: 'Forbidden. No role admitted'})
+  @ApiResponse({ status: 500, description: 'Internal Server Error'})
+  async findAll(@Query() paginationDto:PaginationDto, @Res() res: Response) {
+    const result = await this.gamesService.findAll(paginationDto);
+    res.status(HttpStatus.OK).json({
+      ok: true,
+      result,
+      msg: 'Approved'
+    })
   }
 
   @Get(':term')
+  @ApiResponse({ status: HttpStatus.OK, description: 'Approved', type: CreateGameDto })
+  @ApiResponse({ status: 500, description: 'Internal Server Error'})
   findOne(@Param('term') term: string) {
     return this.gamesService.findOne(term);
   }
 
   @Patch(':id')
   @Role(RoleEnum.Superuser, RoleEnum.Admin)
+  @ApiResponse({ status: HttpStatus.OK, description: 'Approved', type: CreateGameDto })
+  @ApiResponse({ status: 403, description: 'Forbidden. No role admitted'})
+  @ApiResponse({ status: 500, description: 'Internal Server Error'})
   update(
-    //@Param('id', ParseUUIDPipe) id: string, 
-    @Body() updateGameDto: UpdateGameDto,
-    @GetUser() user: UserEntity,
+    @Body() updateGameDto: CreateGameDto,
+    @GetUser() user: UserDto,
     ) {
     return this.gamesService.update( updateGameDto, user);
   }
@@ -70,7 +77,14 @@ export class GamesController {
 
   @Role(RoleEnum.Superuser)
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.gamesService.remove(id);
+  @ApiResponse({ status: HttpStatus.OK, description: 'Approved' })
+  @ApiResponse({ status: 403, description: 'Forbidden. No role admitted'})
+  @ApiResponse({ status: 500, description: 'Internal Server Error'})
+  async remove(@Param('id', ParseUUIDPipe) id: string, @Res() res: Response) {
+    await this.gamesService.remove(id);
+    res.status(HttpStatus.OK).json({
+      ok: true,
+      msg: 'Deleted'
+    })
   }
 }

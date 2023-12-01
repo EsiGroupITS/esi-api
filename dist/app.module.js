@@ -8,23 +8,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
+const jwt_1 = require("@nestjs/jwt");
+const serve_static_1 = require("@nestjs/serve-static");
+const typeorm_1 = require("@nestjs/typeorm");
+const path_1 = require("path");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const users_module_1 = require("./users/users.module");
-const config_1 = require("@nestjs/config");
-const typeorm_1 = require("@nestjs/typeorm");
-const configurations_module_1 = require("./configurations/configurations.module");
-const user_entity_1 = require("./users/user-entity/user-entity");
-const config_entity_1 = require("./configurations/config-entity/config-entity");
 const auth_module_1 = require("./auth/auth.module");
-const jwt_1 = require("@nestjs/jwt");
-const path_1 = require("path");
-const serve_static_1 = require("@nestjs/serve-static");
-const uploads_module_1 = require("./uploads/uploads.module");
-const games_module_1 = require("./games/games.module");
 const common_module_1 = require("./common/common.module");
-const game_entity_1 = require("./games/entities/game.entity");
+const config_2 = require("./config/config");
+const configurations_module_1 = require("./configurations/configurations.module");
+const games_module_1 = require("./games/games.module");
 const questions_module_1 = require("./questions/questions.module");
+const uploads_module_1 = require("./uploads/uploads.module");
+const users_module_1 = require("./users/users.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -32,21 +30,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             serve_static_1.ServeStaticModule.forRoot({ rootPath: (0, path_1.join)(__dirname, '..', 'uploads') }),
             config_1.ConfigModule.forRoot(),
-            typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                database: process.env.DATABASE,
-                username: 'root',
-                password: process.env.PASSWORD,
-                port: +process.env.PORT,
-                host: process.env.HOST,
-                entities: [
-                    user_entity_1.UserEntity,
-                    config_entity_1.ConfigEntity,
-                    game_entity_1.Game,
-                ],
-                autoLoadEntities: true,
-                synchronize: true
-            }),
+            typeorm_1.TypeOrmModule.forRoot(config_2.default),
             jwt_1.JwtModule.register({
                 global: true,
                 secret: process.env.SEED,

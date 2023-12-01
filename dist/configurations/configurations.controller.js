@@ -15,10 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConfigurationsController = void 0;
 const common_1 = require("@nestjs/common");
 const configurations_service_1 = require("./configurations.service");
+const config_dto_1 = require("./config-dto/config-dto");
 const auth_guard_1 = require("../auth/auth.guard");
 const role_guard_1 = require("../auth/roles/role.guard");
 const role_decorator_1 = require("../auth/roles/role.decorator");
 const role_enum_1 = require("../auth/roles/role-enum/role-enum");
+const swagger_1 = require("@nestjs/swagger");
+const user_dto_1 = require("../users/user-dto/user-dto");
 let ConfigurationsController = exports.ConfigurationsController = class ConfigurationsController {
     constructor(configService) {
         this.configService = configService;
@@ -58,6 +61,8 @@ let ConfigurationsController = exports.ConfigurationsController = class Configur
 };
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.OK, description: 'Approved', type: config_dto_1.ConfigDto, isArray: true }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -66,6 +71,23 @@ __decorate([
 ], ConfigurationsController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Get)('users'),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: 'Approved',
+        schema: {
+            allOf: [
+                { $ref: (0, swagger_1.getSchemaPath)(config_dto_1.ConfigDto) },
+                {
+                    properties: {
+                        config: {
+                            $ref: (0, swagger_1.getSchemaPath)(user_dto_1.UserDto),
+                        },
+                    },
+                },
+            ],
+        },
+    }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -74,6 +96,9 @@ __decorate([
 ], ConfigurationsController.prototype, "getAllWithRelations", null);
 __decorate([
     (0, common_1.Put)(':id'),
+    (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.OK, description: 'Approved', type: config_dto_1.ConfigDto }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Not Found' }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
     __param(2, (0, common_1.Res)()),
@@ -83,6 +108,9 @@ __decorate([
 ], ConfigurationsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
+    (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.OK, description: 'Approved' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Not Found' }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
     __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -93,6 +121,7 @@ exports.ConfigurationsController = ConfigurationsController = __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard, role_guard_1.RoleGuard),
     (0, role_decorator_1.Role)(role_enum_1.RoleEnum.Superuser, role_enum_1.RoleEnum.User, role_enum_1.RoleEnum.Admin),
     (0, common_1.Controller)('configurations'),
+    (0, swagger_1.ApiTags)('configurations'),
     __metadata("design:paramtypes", [configurations_service_1.ConfigurationsService])
 ], ConfigurationsController);
 //# sourceMappingURL=configurations.controller.js.map

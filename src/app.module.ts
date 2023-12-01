@@ -1,42 +1,27 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigurationsModule } from './configurations/configurations.module';
-import { UserEntity } from './users/user-entity/user-entity';
-import { ConfigEntity } from './configurations/config-entity/config-entity';
 import { AuthModule } from './auth/auth.module';
-import { JwtModule } from '@nestjs/jwt';
-import { join } from 'path';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { UploadsModule } from './uploads/uploads.module';
-import { GamesModule } from './games/games.module';
 import { CommonModule } from './common/common.module';
-import { Game } from './games/entities/game.entity';
+import dbConfig from './config/config';
+import { ConfigurationsModule } from './configurations/configurations.module';
+import { GamesModule } from './games/games.module';
 import { QuestionsModule } from './questions/questions.module';
+import { UploadsModule } from './uploads/uploads.module';
+import { UsersModule } from './users/users.module';
+
+
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({rootPath: join(__dirname, '..', 'uploads')}), //! Manages file uploads path
     ConfigModule.forRoot(), //! Configuration module
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      database: process.env.DATABASE,
-      username: 'root',
-      password: process.env.PASSWORD,
-      port: +process.env.PORT,
-      host: process.env.HOST,
-      entities: [
-        /* Entities */
-        UserEntity,
-        ConfigEntity,
-        Game,
-      ],
-      autoLoadEntities: true,
-      synchronize: true
-    }),
+    TypeOrmModule.forRoot(dbConfig),
     JwtModule.register({ //! Json Web Token module configurations
       global: true,
       secret: process.env.SEED,

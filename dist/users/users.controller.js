@@ -14,11 +14,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
-const users_service_1 = require("./users.service");
+const swagger_1 = require("@nestjs/swagger");
 const auth_guard_1 = require("../auth/auth.guard");
-const role_guard_1 = require("../auth/roles/role.guard");
-const role_decorator_1 = require("../auth/roles/role.decorator");
 const role_enum_1 = require("../auth/roles/role-enum/role-enum");
+const role_decorator_1 = require("../auth/roles/role.decorator");
+const role_guard_1 = require("../auth/roles/role.guard");
+const config_dto_1 = require("../configurations/config-dto/config-dto");
+const user_dto_1 = require("./user-dto/user-dto");
+const users_service_1 = require("./users.service");
 let UsersController = exports.UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
@@ -47,7 +50,7 @@ let UsersController = exports.UsersController = class UsersController {
             msg: 'Approved'
         });
     }
-    async updateUserInfo(user, res) {
+    async updateUserInfo(id, user, res) {
         const result = await this.userService.updateUserInfo(user);
         res.status(common_1.HttpStatus.OK).json({
             ok: true,
@@ -66,6 +69,13 @@ let UsersController = exports.UsersController = class UsersController {
 };
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: 'Approved',
+        type: user_dto_1.UserDto,
+        isArray: true
+    }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -74,6 +84,23 @@ __decorate([
 ], UsersController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Get)('config'),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: 'Approved',
+        schema: {
+            allOf: [
+                { $ref: (0, swagger_1.getSchemaPath)(user_dto_1.UserDto) },
+                {
+                    properties: {
+                        config: {
+                            $ref: (0, swagger_1.getSchemaPath)(config_dto_1.ConfigDto),
+                        },
+                    },
+                },
+            ],
+        },
+    }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -83,6 +110,9 @@ __decorate([
 __decorate([
     (0, role_decorator_1.Role)(role_enum_1.RoleEnum.Superuser),
     (0, common_1.Put)('admin/:id'),
+    (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.OK, description: 'Approved', type: user_dto_1.UserDto }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Forbidden. No role admitted' }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
     __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
     __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -91,14 +121,27 @@ __decorate([
 ], UsersController.prototype, "updateSuperuserRole", null);
 __decorate([
     (0, common_1.Put)(':id'),
-    __param(1, (0, common_1.Res)()),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: 'Approved',
+        type: user_dto_1.UserDto,
+    }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
+    __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateUserInfo", null);
 __decorate([
     (0, role_decorator_1.Role)(role_enum_1.RoleEnum.Superuser),
     (0, common_1.Delete)(':id'),
+    (0, swagger_1.ApiResponse)({
+        status: common_1.HttpStatus.OK,
+        description: 'Approved',
+    }),
+    (0, swagger_1.ApiResponse)({ status: 403, description: 'Forbidden. No role admitted' }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
     __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe())),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -109,6 +152,7 @@ exports.UsersController = UsersController = __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard, role_guard_1.RoleGuard),
     (0, role_decorator_1.Role)(role_enum_1.RoleEnum.Admin, role_enum_1.RoleEnum.User, role_enum_1.RoleEnum.Superuser),
     (0, common_1.Controller)('users'),
+    (0, swagger_1.ApiTags)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map

@@ -18,6 +18,8 @@ const uploads_service_1 = require("./uploads.service");
 const platform_express_1 = require("@nestjs/platform-express");
 const uploads_helper_1 = require("../helpers/uploads.helper");
 const rxjs_1 = require("rxjs");
+const swagger_1 = require("@nestjs/swagger");
+const file_upload_dto_1 = require("./dto/file.upload.dto");
 let UploadsController = exports.UploadsController = class UploadsController {
     constructor(uploadService) {
         this.uploadService = uploadService;
@@ -29,7 +31,6 @@ let UploadsController = exports.UploadsController = class UploadsController {
         });
         return filesName;
     }
-    insertFile() { return; }
     async update(file, name) {
         await this.uploadService.removeFile(name);
         if (!file)
@@ -40,21 +41,24 @@ let UploadsController = exports.UploadsController = class UploadsController {
 __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseInterceptors)((0, platform_express_1.FilesInterceptor)('file', null, uploads_helper_1.saveImageToStorage)),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({
+        description: 'Files',
+        type: file_upload_dto_1.FileUploadDto,
+    }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Files uploaded successfully', type: [String] }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'File extension not supported', type: Object }),
     __param(0, (0, common_1.UploadedFiles)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Array]),
     __metadata("design:returntype", void 0)
 ], UploadsController.prototype, "insertMultipleFiles", null);
 __decorate([
-    (0, common_1.Post)(),
-    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', uploads_helper_1.saveImageToStorage)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], UploadsController.prototype, "insertFile", null);
-__decorate([
     (0, common_1.Put)(':name'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', uploads_helper_1.saveImageToStorage)),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Files updated successfully', type: [String] }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'File extension not supported', type: Object }),
     __param(0, (0, common_1.UploadedFile)()),
     __param(1, (0, common_1.Param)('name')),
     __metadata("design:type", Function),
@@ -63,6 +67,7 @@ __decorate([
 ], UploadsController.prototype, "update", null);
 exports.UploadsController = UploadsController = __decorate([
     (0, common_1.Controller)('uploads'),
+    (0, swagger_1.ApiTags)('uploads'),
     __metadata("design:paramtypes", [uploads_service_1.UploadsService])
 ], UploadsController);
 //# sourceMappingURL=uploads.controller.js.map
